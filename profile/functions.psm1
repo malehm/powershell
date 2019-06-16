@@ -14,6 +14,19 @@ function fMCV {
 <#
 .SYNOPSIS
 
+starts browser-sync
+
+.DESCRIPTION
+
+starts browser-sync
+#>
+function fBsync {
+    Start-Process -FilePath "browser-sync" -ArgumentList "start -s src -f src -b `"opera`" --no-notify"
+}
+
+<#
+.SYNOPSIS
+
 Sets the current location to workspaces.
 
 .DESCRIPTION
@@ -51,9 +64,9 @@ function eclipse {
         return
     }
     if($wsPath){
-        Invoke-Expression -Command "$($eclipseHome)\eclipse.exe -data $wsPath"
+        & "$($eclipseHome)\eclipse.exe" -data "`"$($wsPath)`"" *> $null
     }else{
-        Invoke-Expression -Command "$($eclipseHome)\eclipse.exe"
+        & "$($eclipseHome)\eclipse.exe" *> $null
     }
 }
 
@@ -79,11 +92,10 @@ function code {
         "Variable `$vsCodeHome not set"
         return
     }
-    if($wsPath){
-        Invoke-Expression -Command "$($vsCodeHome)\Code.exe $wsPath"
-    }else{
-        Invoke-Expression -Command "$($vsCodeHome)\Code.exe ."
+    if(!$wsPath){
+        $wsPath = "."
     }
+    & "$($vsCodeHome)\Code.exe" "$wsPath" *> $null
 }
 
 <#
